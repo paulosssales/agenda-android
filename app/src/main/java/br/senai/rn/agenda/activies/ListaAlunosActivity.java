@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.rn.senai.br.agenda.R;
+import br.senai.rn.agenda.daos.AlunoDAO;
 
 public class Main extends AppCompatActivity {
 
@@ -19,17 +20,14 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.main_activity);
         setTitle("Lista de alunos");
 
-        List<String> alunos = new ArrayList<String>();
-        alunos.add("Paulo");
-        alunos.add("João");
-        alunos.add("Maria");
+        final AlunoDAO dao = new AlunoDAO();
 
         ListView listaAlunos = (ListView) findViewById(R.id._dynamic_main_list_alunos);
 
         listaAlunos.setAdapter(new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
-                alunos
+                dao.obterTodos()
         ));
 
     }
