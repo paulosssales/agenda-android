@@ -1,4 +1,4 @@
-package br.rn.senai.br.agenda;
+package br.senai.rn.agenda.activies;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +8,8 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import br.rn.senai.br.agenda.R;
 
 public class Main extends AppCompatActivity {
 
