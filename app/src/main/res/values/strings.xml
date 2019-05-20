@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Agenda</string>
-    <string name="agenda">Agenda</string>
+    <string name="agenda" translatable="false">Agenda</string>
+    <string name="lista_alunos_activity_titulo">Lista de alunos</string>
+    <string name="formulario_aluno_activity_titulo">Novo aluno</string>
+    <string name="formulario_aluno_activity_toast_memsagem_save_empty" translatable="false">Nome e telefone devem ser informados</string>
 </resources>
