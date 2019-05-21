@@ -22,6 +22,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
     private final String TITULO_APPBAR = "Lista de alunos";
     private final AlunoDAO dao = new AlunoDAO();
+    private ArrayAdapter<Aluno> adapter;
     private ListView listaAlunos;
     private FloatingActionButton botaoAdicionar;
 
@@ -43,8 +44,12 @@ public class ListaAlunosActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        configurarLista();
+        adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                dao.obterTodos());
+        listaAlunos.setAdapter(adapter);
+//        configurarLista();
     }
 
     private void definirEventos() {
@@ -72,6 +77,17 @@ public class ListaAlunosActivity extends AppCompatActivity {
                         .show();
             }
         });
+
+        listaAlunos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Aluno alunoSelected = (Aluno) parent.getItemAtPosition(position);
+                dao.remover(alunoSelected);
+                return true;
+            }
+        });
+
+
     }
 
     private void inicializarComponentes() {
@@ -79,11 +95,11 @@ public class ListaAlunosActivity extends AppCompatActivity {
         listaAlunos = findViewById(R.id._dynamic_main_list_alunos);
     }
 
-    private void configurarLista() {
-        listaAlunos.setAdapter(new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                dao.obterTodos()
-        ));
-    }
+//    private void configurarLista() {
+//        listaAlunos.setAdapter(new ArrayAdapter<>(
+//                this,
+//                android.R.layout.simple_list_item_1,
+//                dao.obterTodos()
+//        ));
+//    }
 }

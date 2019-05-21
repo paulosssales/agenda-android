@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import br.rn.senai.br.agenda.R;
@@ -14,12 +15,14 @@ import br.senai.rn.agenda.models.Aluno;
 
 public class FormularioAlunoActivity extends AppCompatActivity {
 
-    private final String TITULO_APPBAR = "Novo aluno";
+    private String TITULO_APPBAR = "Novo aluno";
+    private TextView tViewTitulo;
     private EditText campoNome;
     private EditText campoTelefone;
     private EditText campoEmail;
     private Button botaoSalvar;
-    final AlunoDAO dao = new AlunoDAO();
+    private Aluno aluno;
+    private AlunoDAO dao = new AlunoDAO();
 
 
     @Override
@@ -45,9 +48,8 @@ public class FormularioAlunoActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG)
                             .show();
                 } else {
-
-                    Aluno alunoCriado = salvarAluno();
-                    persistirAluno(alunoCriado);
+                    salvarAluno();
+                    criarAluno();
                     limparCampos();
                     finish();
                 }
@@ -55,10 +57,6 @@ public class FormularioAlunoActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void persistirAluno(Aluno aluno) {
-        dao.save(aluno);
     }
 
     private void limparCampos() {
@@ -72,24 +70,41 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private Aluno salvarAluno() {
+    private void salvarAluno() {
+        TITULO_APPBAR  = "Editar aluno";
+        dao.save(aluno);
+        finish();
+    }
+
+    private void criarAluno(){
         String nome = campoNome.getText().toString();
         String telefone = campoTelefone.getText().toString();
         String email = campoEmail.getText().toString();
-        return new Aluno(nome, telefone, email);
+
+        aluno.setNome(nome);
+        aluno.setTelefone(telefone);
+        aluno.setEmail(email);
     }
 
     private void inicializarComponentes() {
+        tViewTitulo = findViewById(R.id.activity_formulario_tv_titulo);
         campoNome = findViewById(R.id.activity_formulario_et_nome);
         campoTelefone = findViewById(R.id.activity_formulario_et_telefone);
         campoEmail = findViewById(R.id.activity_formulario_et_email);
         botaoSalvar = findViewById(R.id.activity_formulario_bt_salvar);
 
-        Aluno aluno = (Aluno) getIntent().getSerializableExtra("aluno");
+        inicializarAluno();
+    }
+
+    private void inicializarAluno() {
+        dao = new AlunoDAO();
+        aluno = (Aluno) getIntent().getSerializableExtra("aluno");
         if (aluno != null) {
             campoNome.setText(aluno.getNome());
             campoTelefone.setText(aluno.getTelefone());
             campoEmail.setText(aluno.getEmail());
+        }else{
+            aluno = new Aluno();
         }
     }
 }
