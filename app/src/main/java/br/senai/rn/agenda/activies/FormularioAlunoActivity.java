@@ -89,6 +89,15 @@ public class FormularioAlunoActivity extends AppCompatActivity {
                     limparCampos();
                     finish();
                 }
+                // ou usando o switch
+//                switch (itemSelectedId){
+//                    case R.id.activity_formulario_aluno_menu_salvar:
+//                        salvarAluno();
+//                        criarAluno();
+//                        limparCampos();
+//                        finish();
+//                        break;
+//                }
             }
         }
         return super.onOptionsItemSelected(item);
