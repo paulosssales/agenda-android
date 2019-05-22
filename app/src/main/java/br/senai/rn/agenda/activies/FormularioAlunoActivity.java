@@ -96,23 +96,23 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         int itemSelectedId = item.getItemId();
         if (itemSelectedId == R.id.activity_formulario_aluno_menu_salvar){
             if (isEmpty(campoNome) && isEmpty(campoTelefone)) {
-                    Toast.makeText(
-                            FormularioAlunoActivity.this,
-                            getString(R.string.formulario_aluno_activity_toast_memsagem_save_empty),
-                            Toast.LENGTH_LONG)
-                            .show();
-                } else {
-                    salvarAluno();
-                    criarAluno();
-                    limparCampos();
-                    finish();
-                }
+                Toast.makeText(
+                        FormularioAlunoActivity.this,
+                        getString(R.string.formulario_aluno_activity_toast_memsagem_save_empty),
+                        Toast.LENGTH_LONG)
+                        .show();
+            } else {
+                salvarAluno();
+                criarAluno();
+                limparCampos();
+                finish();
+            }
         }
-        return super.onContextItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
     private void inicializarComponentes() {
