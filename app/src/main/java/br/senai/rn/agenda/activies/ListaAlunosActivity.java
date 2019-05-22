@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,7 +23,7 @@ import static br.rn.senai.br.agenda.R.color.colorBlue;
 public class ListaAlunosActivity extends AppCompatActivity {
 
     private final String TITULO_APPBAR = "Lista de alunos";
-    private final AlunoDAO dao = new AlunoDAO();
+    private AlunoDAO dao;
     private ArrayAdapter<Aluno> adapter;
     private ListView listaAlunos;
     private FloatingActionButton botaoAdicionar;
@@ -44,12 +46,8 @@ public class ListaAlunosActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                dao.obterTodos());
-        listaAlunos.setAdapter(adapter);
-//        configurarLista();
+        adapter.clear();
+        adapter.addAll(dao.obterTodos());
     }
 
     private void definirEventos() {
@@ -78,28 +76,38 @@ public class ListaAlunosActivity extends AppCompatActivity {
             }
         });
 
-        listaAlunos.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Aluno alunoSelected = (Aluno) parent.getItemAtPosition(position);
-                dao.remover(alunoSelected);
-                return true;
-            }
-        });
+    }
 
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int menuSelecionadoId = item.getItemId();
+        if (menuSelecionadoId == R.id.activity_lista_aluno_menu_remover) {
+            AdapterView.AdapterContextMenuInfo menuInfo =
+                    (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+            Aluno alunoSelected = adapter.getItem(menuInfo.position);
+            dao.remover(alunoSelected);
+            adapter.remove(alunoSelected);
+        }
+        return super.onContextItemSelected(item);
+    }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        getMenuInflater().inflate(R.menu.activity_lista_aluno_menu, menu);
     }
 
     private void inicializarComponentes() {
+        dao = new AlunoDAO();
         botaoAdicionar = findViewById(R.id.activity_main_fab_novo_aluno);
         listaAlunos = findViewById(R.id._dynamic_main_list_alunos);
+
+        adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1);
+        listaAlunos.setAdapter(adapter);
+
+        registerForContextMenu(listaAlunos);
     }
 
-//    private void configurarLista() {
-//        listaAlunos.setAdapter(new ArrayAdapter<>(
-//                this,
-//                android.R.layout.simple_list_item_1,
-//                dao.obterTodos()
-//        ));
-//    }
 }

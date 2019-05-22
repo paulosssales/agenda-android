@@ -3,6 +3,8 @@ package br.senai.rn.agenda.activies;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,25 +39,26 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     }
 
     private void definirEventos() {
-        botaoSalvar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        botaoSalvar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                if (isEmpty(campoNome) && isEmpty(campoTelefone)) {
+//                    Toast.makeText(
+//                            FormularioAlunoActivity.this,
+//                            getString(R.string.formulario_aluno_activity_toast_memsagem_save_empty),
+//                            Toast.LENGTH_LONG)
+//                            .show();
+//                } else {
+//                    salvarAluno();
+//                    criarAluno();
+//                    limparCampos();
+//                    finish();
+//                }
+//
+//            }
+//        });
 
-                if (isEmpty(campoNome) && isEmpty(campoTelefone)) {
-                    Toast.makeText(
-                            FormularioAlunoActivity.this,
-                            getString(R.string.formulario_aluno_activity_toast_memsagem_save_empty),
-                            Toast.LENGTH_LONG)
-                            .show();
-                } else {
-                    salvarAluno();
-                    criarAluno();
-                    limparCampos();
-                    finish();
-                }
-
-            }
-        });
 
     }
 
@@ -84,6 +87,32 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         aluno.setNome(nome);
         aluno.setTelefone(telefone);
         aluno.setEmail(email);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_formulario_aluno_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int itemSelectedId = item.getItemId();
+        if (itemSelectedId == R.id.activity_formulario_aluno_menu_salvar){
+            if (isEmpty(campoNome) && isEmpty(campoTelefone)) {
+                    Toast.makeText(
+                            FormularioAlunoActivity.this,
+                            getString(R.string.formulario_aluno_activity_toast_memsagem_save_empty),
+                            Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    salvarAluno();
+                    criarAluno();
+                    limparCampos();
+                    finish();
+                }
+        }
+        return super.onContextItemSelected(item);
     }
 
     private void inicializarComponentes() {
