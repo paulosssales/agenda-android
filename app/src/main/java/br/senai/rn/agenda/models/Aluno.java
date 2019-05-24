@@ -1,7 +1,5 @@
 package br.senai.rn.agenda.models;
 
-import android.support.annotation.NonNull;
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -69,7 +67,7 @@ public class Aluno implements Serializable, Comparable<Aluno> {
 
     @Override
     public String toString() {
-        return  getNome();
+        return  getNome()+" - "+getTelefone();
     }
 
     @Override

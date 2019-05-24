@@ -24,6 +24,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private EditText campoEmail;
     private Aluno aluno;
     private AlunoDAO dao = new AlunoDAO();
+    private Button botaoSalvar;
 
 
     @Override
@@ -37,7 +38,26 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     }
 
-    private void definirEventos() {}
+    private void definirEventos() {
+        botaoSalvar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEmpty(campoNome) && isEmpty(campoTelefone)) {
+                    Toast.makeText(
+                            FormularioAlunoActivity.this,
+                            getString(R.string.formulario_aluno_activity_toast_memsagem_save_empty),
+                            Toast.LENGTH_LONG)
+                            .show();
+                } else {
+
+                    salvarAluno();
+                    criarAluno();
+                    limparCampos();
+                    finish();
+                }
+            }
+        });
+    }
 
     private void limparCampos() {
         campoNome.setText("");
@@ -83,12 +103,10 @@ public class FormularioAlunoActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG)
                         .show();
             } else {
-                if (itemSelectedId == R.id.activity_formulario_aluno_menu_salvar){
-                    salvarAluno();
-                    criarAluno();
-                    limparCampos();
-                    finish();
-                }
+                salvarAluno();
+                criarAluno();
+                limparCampos();
+                finish();
                 // ou usando o switch
 //                switch (itemSelectedId){
 //                    case R.id.activity_formulario_aluno_menu_salvar:
@@ -108,6 +126,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         campoNome = findViewById(R.id.activity_formulario_et_nome);
         campoTelefone = findViewById(R.id.activity_formulario_et_telefone);
         campoEmail = findViewById(R.id.activity_formulario_et_email);
+        botaoSalvar = findViewById(R.id.activity_formulario_bt_salvar);
 
         inicializarAluno();
     }
